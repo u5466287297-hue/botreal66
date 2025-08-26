@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Trading Bot Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #111; color: #eee; }
+        .container { padding: 20px; }
+        .signal-box { padding: 20px; margin: 20px 0; border-radius: 10px; font-size: 20px; text-align: center; white-space: pre-line; }
+        .buy { background: #006400; color: #fff; }
+        .sell { background: #8B0000; color: #fff; }
+        .pending { background: #DAA520; color: #000; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>AI Trading Bot Dashboard</h1>
+        <div id="signal" class="signal-box">Loading signal...</div>
+    </div>
+    <script>
+        async function fetchSignal() {
+            let response = await fetch("/api/signal");
+            let data = await response.json();
+            let box = document.getElementById("signal");
+            let text = "Asset: " + data.asset + "\nSignal: " + data.signal + "\nPending: " + data.pending + "\nHistory: " + data.history.join(", ");
+            box.innerText = text;
+            box.className = "signal-box";
+            if (data.signal === "BUY") box.classList.add("buy");
+            else if (data.signal === "SELL") box.classList.add("sell");
+            else if (data.pending !== "NONE") box.classList.add("pending");
+        }
+        setInterval(fetchSignal, 5000);
+        fetchSignal();
+    </script>
+</body>
+</html>
