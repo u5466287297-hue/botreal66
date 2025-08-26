@@ -8,7 +8,7 @@ from indicators import add_indicators
 MODELS_DIR = "models"
 
 def train_model(symbol, model_file):
-    data = yf.download(symbol, interval="1m", period="30d")
+    data = yf.download(symbol, interval="1m", period="7d")
     data = add_indicators(data)
     data.dropna(inplace=True)
 
